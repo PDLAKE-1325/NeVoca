@@ -135,7 +135,7 @@ const ExampleInputContainer = styled.div`
   overflow-x: hidden;
 `;
 
-const ExampleInput = styled.input`
+const ExampleInput = styled.textarea`
   width: 100%;
   padding: 0.75rem;
   border: 1px solid ${(props) => props.theme.border};
@@ -146,6 +146,8 @@ const ExampleInput = styled.input`
   box-sizing: border-box;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  resize: vertical;
+  min-height: 80px;
 
   &:focus {
     outline: none;
@@ -153,7 +155,7 @@ const ExampleInput = styled.input`
   }
 `;
 
-const ExampleTranslationInput = styled.input`
+const ExampleTranslationInput = styled.textarea`
   width: 100%;
   padding: 0.75rem;
   border: 1px solid ${(props) => props.theme.border};
@@ -164,10 +166,29 @@ const ExampleTranslationInput = styled.input`
   box-sizing: border-box;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  resize: vertical;
+  min-height: 80px;
 
   &:focus {
     outline: none;
     border-color: ${(props) => props.theme.primary};
+  }
+`;
+
+const AddExampleButton = styled.button`
+  background-color: ${(props) => props.theme.primary};
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  width: 100%;
+  margin-top: 0.5rem;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: ${(props) => props.theme.primaryHover};
   }
 `;
 
@@ -292,9 +313,9 @@ const WordForm: React.FC<WordFormProps> = ({ onAddWord }) => {
               onChange={(e) => setNewExampleTranslation(e.target.value)}
               placeholder="예문 번역"
             />
-            <AddButton type="button" onClick={handleAddExample}>
+            <AddExampleButton type="button" onClick={handleAddExample}>
               예문 추가
-            </AddButton>
+            </AddExampleButton>
           </ExampleInputContainer>
           <HelpText>
             예문에서 강조할 단어는 *단어* 형식으로 입력하세요. 예: I love
