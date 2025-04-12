@@ -178,11 +178,11 @@ const ExampleTranslationInput = styled.textarea`
 const AddExampleButton = styled.button`
   background-color: ${(props) => props.theme.primary};
   color: white;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem;
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
   width: 100%;
   margin-top: 0.5rem;
   transition: background-color 0.3s;
