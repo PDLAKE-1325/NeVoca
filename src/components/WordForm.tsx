@@ -4,35 +4,39 @@ import { Word, Meaning, Example } from "../types";
 import { v4 as uuidv4 } from "uuid";
 
 const FormContainer = styled.div`
+  max-width: 100%;
+  margin: 0 auto;
   background-color: ${(props) => props.theme.surface};
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const FormTitle = styled.h2`
-  margin-bottom: 20px;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
   color: ${(props) => props.theme.text};
 `;
 
 const FormGroup = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
 `;
 
 const Label = styled.label`
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
   color: ${(props) => props.theme.text};
+  font-size: 0.9rem;
 `;
 
 const Input = styled.input`
   width: 100%;
-  padding: 10px;
+  padding: 0.75rem;
   border: 1px solid ${(props) => props.theme.border};
-  border-radius: 4px;
+  border-radius: 0.5rem;
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
-  font-size: 16px;
+  font-size: 1rem;
 
   &:focus {
     outline: none;
@@ -42,12 +46,12 @@ const Input = styled.input`
 
 const TextArea = styled.textarea`
   width: 100%;
-  padding: 10px;
+  padding: 0.75rem;
   border: 1px solid ${(props) => props.theme.border};
-  border-radius: 4px;
+  border-radius: 0.5rem;
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
-  font-size: 16px;
+  font-size: 1rem;
   resize: vertical;
   min-height: 100px;
 
@@ -60,14 +64,13 @@ const TextArea = styled.textarea`
 const AddButton = styled.button`
   background-color: ${(props) => props.theme.primary};
   color: white;
-  padding: 10px 20px;
+  padding: 0.5rem 1rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 0.5rem;
   cursor: pointer;
-  font-size: 16px;
-  margin-right: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
   transition: background-color 0.3s;
 
   &:hover {
@@ -78,11 +81,13 @@ const AddButton = styled.button`
 const SubmitButton = styled.button`
   background-color: ${(props) => props.theme.primary};
   color: white;
-  padding: 10px 20px;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 0.5rem;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1rem;
+  width: 100%;
+  margin-top: 1rem;
   transition: background-color 0.3s;
 
   &:hover {
@@ -93,27 +98,27 @@ const SubmitButton = styled.button`
 const List = styled.ul`
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0.5rem 0;
 `;
 
 const ListItem = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 0.75rem;
   background-color: ${(props) => props.theme.background};
-  border-radius: 4px;
-  margin-bottom: 10px;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
 `;
 
 const RemoveButton = styled.button`
   background-color: ${(props) => props.theme.error};
   color: white;
-  padding: 5px 10px;
+  padding: 0.25rem 0.5rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.8rem;
   transition: background-color 0.3s;
 
   &:hover {
@@ -123,18 +128,19 @@ const RemoveButton = styled.button`
 
 const ExampleInputContainer = styled.div`
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 `;
 
 const ExampleInput = styled.input`
-  flex: 1;
-  padding: 10px;
+  width: 100%;
+  padding: 0.75rem;
   border: 1px solid ${(props) => props.theme.border};
-  border-radius: 4px;
+  border-radius: 0.5rem;
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
-  font-size: 16px;
+  font-size: 1rem;
 
   &:focus {
     outline: none;
@@ -143,13 +149,13 @@ const ExampleInput = styled.input`
 `;
 
 const ExampleTranslationInput = styled.input`
-  flex: 1;
-  padding: 10px;
+  width: 100%;
+  padding: 0.75rem;
   border: 1px solid ${(props) => props.theme.border};
-  border-radius: 4px;
+  border-radius: 0.5rem;
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
-  font-size: 16px;
+  font-size: 1rem;
 
   &:focus {
     outline: none;
@@ -159,9 +165,9 @@ const ExampleTranslationInput = styled.input`
 
 const HelpText = styled.p`
   color: ${(props) => props.theme.textSecondary};
-  font-size: 0.9rem;
-  margin-top: 5px;
-  margin-bottom: 10px;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
 `;
 
 interface WordFormProps {

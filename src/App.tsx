@@ -18,51 +18,84 @@ const darkTheme: Theme = {
 };
 
 const AppContainer = styled.div`
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
   min-height: 100vh;
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
+  transition: background-color 0.3s, color 0.3s;
+  overflow-x: hidden;
 `;
 
 const Header = styled.header`
   background-color: ${(props) => props.theme.surface};
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const Title = styled.h1`
+  margin: 0;
+  font-size: 1.5rem;
   color: ${(props) => props.theme.text};
-  font-size: 2.5rem;
-  text-align: center;
-  margin-bottom: 20px;
 `;
 
 const Nav = styled.nav`
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
 `;
 
 const NavButton = styled.button<{ active: boolean }>`
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
   background-color: ${(props) =>
     props.active ? props.theme.primary : props.theme.surface};
-  color: ${(props) => (props.active ? "white" : props.theme.textSecondary)};
+  color: ${(props) => (props.active ? "white" : props.theme.text)};
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  flex: 1;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:hover {
     background-color: ${(props) =>
-      props.active ? props.theme.primaryHover : props.theme.border};
+      props.active ? props.theme.primary : props.theme.surfaceHover};
   }
 `;
 
-const MainContent = styled.main`
-  max-width: 1200px;
+const Main = styled.main`
+  padding: 1rem;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 20px;
+`;
+
+const ThemeToggle = styled.button`
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background-color: ${(props) => props.theme.primary};
+  color: white;
+  border: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 100;
 `;
 
 const App: React.FC = () => {
@@ -126,13 +159,13 @@ const App: React.FC = () => {
           </Nav>
         </Header>
 
-        <MainContent>
+        <Main>
           {activeTab === "add" && <WordForm onAddWord={handleAddWord} />}
           {activeTab === "list" && (
             <WordList words={words} onDeleteWord={handleDeleteWord} />
           )}
           {activeTab === "quiz" && <Quiz words={words} />}
-        </MainContent>
+        </Main>
       </AppContainer>
     </ThemeProvider>
   );
