@@ -64,13 +64,12 @@ const TextArea = styled.textarea`
 const AddButton = styled.button`
   background-color: ${(props) => props.theme.primary};
   color: white;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem;
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-size: 0.9rem;
-  margin-right: 0.5rem;
-  margin-top: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
   transition: background-color 0.3s;
 
   &:hover {
@@ -199,6 +198,14 @@ const HelpText = styled.p`
   margin-bottom: 0.5rem;
 `;
 
+const MeaningInputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+`;
+
 interface WordFormProps {
   onAddWord: (word: Word) => void;
 }
@@ -275,7 +282,7 @@ const WordForm: React.FC<WordFormProps> = ({ onAddWord }) => {
 
         <FormGroup>
           <Label>의미</Label>
-          <div>
+          <MeaningInputContainer>
             <Input
               value={newMeaning}
               onChange={(e) => setNewMeaning(e.target.value)}
@@ -284,7 +291,7 @@ const WordForm: React.FC<WordFormProps> = ({ onAddWord }) => {
             <AddButton type="button" onClick={handleAddMeaning}>
               의미 추가
             </AddButton>
-          </div>
+          </MeaningInputContainer>
           <List>
             {meanings.map((meaning) => (
               <ListItem key={meaning.id}>
@@ -302,20 +309,21 @@ const WordForm: React.FC<WordFormProps> = ({ onAddWord }) => {
 
         <FormGroup>
           <Label>예문</Label>
-          <ExampleInput
-            value={newExample}
-            onChange={(e) => setNewExample(e.target.value)}
-            placeholder="예문을 입력하세요 (*단어* 형식으로 강조할 단어를 표시)"
-          />
-          <ExampleTranslationInput
-            value={newExampleTranslation}
-            onChange={(e) => setNewExampleTranslation(e.target.value)}
-            placeholder="예문 번역"
-          />
-          <AddExampleButton type="button" onClick={handleAddExample}>
-            예문 추가
-          </AddExampleButton>
-
+          <ExampleInputContainer>
+            <ExampleInput
+              value={newExample}
+              onChange={(e) => setNewExample(e.target.value)}
+              placeholder="예문을 입력하세요 (*단어* 형식으로 강조할 단어를 표시)"
+            />
+            <ExampleTranslationInput
+              value={newExampleTranslation}
+              onChange={(e) => setNewExampleTranslation(e.target.value)}
+              placeholder="예문 번역"
+            />
+            <AddExampleButton type="button" onClick={handleAddExample}>
+              예문 추가
+            </AddExampleButton>
+          </ExampleInputContainer>
           <HelpText>
             예문에서 강조할 단어는 *단어* 형식으로 입력하세요. 예: I love
             *reading* books.
