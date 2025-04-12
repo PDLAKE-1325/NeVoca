@@ -302,21 +302,20 @@ const WordForm: React.FC<WordFormProps> = ({ onAddWord }) => {
 
         <FormGroup>
           <Label>예문</Label>
-          <ExampleInputContainer>
-            <ExampleInput
-              value={newExample}
-              onChange={(e) => setNewExample(e.target.value)}
-              placeholder="예문을 입력하세요 (*단어* 형식으로 강조할 단어를 표시)"
-            />
-            <ExampleTranslationInput
-              value={newExampleTranslation}
-              onChange={(e) => setNewExampleTranslation(e.target.value)}
-              placeholder="예문 번역"
-            />
-            <AddExampleButton type="button" onClick={handleAddExample}>
-              예문 추가
-            </AddExampleButton>
-          </ExampleInputContainer>
+          <ExampleInput
+            value={newExample}
+            onChange={(e) => setNewExample(e.target.value)}
+            placeholder="예문을 입력하세요 (*단어* 형식으로 강조할 단어를 표시)"
+          />
+          <ExampleTranslationInput
+            value={newExampleTranslation}
+            onChange={(e) => setNewExampleTranslation(e.target.value)}
+            placeholder="예문 번역"
+          />
+          <AddExampleButton type="button" onClick={handleAddExample}>
+            예문 추가
+          </AddExampleButton>
+
           <HelpText>
             예문에서 강조할 단어는 *단어* 형식으로 입력하세요. 예: I love
             *reading* books.
