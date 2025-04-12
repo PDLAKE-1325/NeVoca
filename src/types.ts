@@ -19,8 +19,6 @@ export interface Example {
   id: string;
   sentence: string;
   translation: string;
-  wordPosition: number;
-  wordLength: number;
 }
 
 export interface Word {
@@ -32,12 +30,15 @@ export interface Word {
 
 export interface Quiz {
   id: string;
-  type: "word-to-meaning" | "meaning-to-word" | "fill-in-blank";
+  type: "word-to-meaning" | "meaning-to-word";
   question: string;
   answer: string;
   options?: string[];
-  exampleWordPosition?: number;
-  exampleWordLength?: number;
+}
+
+export interface StoredWords {
+  words: Word[];
+  lastUpdated: string;
 }
 
 declare module "styled-components" {

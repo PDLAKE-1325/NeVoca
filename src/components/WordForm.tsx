@@ -21,7 +21,7 @@ const FormGroup = styled.div`
 
 const Label = styled.label`
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   color: ${(props) => props.theme.text};
 `;
 
@@ -48,8 +48,8 @@ const TextArea = styled.textarea`
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
   font-size: 16px;
-  min-height: 100px;
   resize: vertical;
+  min-height: 100px;
 
   &:focus {
     outline: none;
@@ -57,47 +57,17 @@ const TextArea = styled.textarea`
   }
 `;
 
-const ListContainer = styled.div`
-  margin-top: 10px;
-`;
-
-const ListItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: ${(props) => props.theme.background};
-  border: 1px solid ${(props) => props.theme.border};
-  border-radius: 4px;
-  margin-bottom: 10px;
-`;
-
-const ListItemText = styled.span`
-  color: ${(props) => props.theme.text};
-`;
-
-const RemoveButton = styled.button`
-  background-color: ${(props) => props.theme.error};
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: ${(props) => props.theme.errorHover};
-  }
-`;
-
 const AddButton = styled.button`
   background-color: ${(props) => props.theme.primary};
   color: white;
-  border: none;
   padding: 10px 20px;
+  border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   transition: background-color 0.3s;
 
   &:hover {
@@ -108,13 +78,11 @@ const AddButton = styled.button`
 const SubmitButton = styled.button`
   background-color: ${(props) => props.theme.primary};
   color: white;
+  padding: 10px 20px;
   border: none;
-  padding: 15px 30px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  width: 100%;
-  margin-top: 20px;
   transition: background-color 0.3s;
 
   &:hover {
@@ -122,10 +90,77 @@ const SubmitButton = styled.button`
   }
 `;
 
+const List = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+`;
+
+const ListItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: ${(props) => props.theme.background};
+  border-radius: 4px;
+  margin-bottom: 10px;
+`;
+
+const RemoveButton = styled.button`
+  background-color: ${(props) => props.theme.error};
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: ${(props) => props.theme.errorHover};
+  }
+`;
+
 const ExampleInputContainer = styled.div`
   display: flex;
-  flex-direction: column;
   gap: 10px;
+  margin-bottom: 10px;
+`;
+
+const ExampleInput = styled.input`
+  flex: 1;
+  padding: 10px;
+  border: 1px solid ${(props) => props.theme.border};
+  border-radius: 4px;
+  background-color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.text};
+  font-size: 16px;
+
+  &:focus {
+    outline: none;
+    border-color: ${(props) => props.theme.primary};
+  }
+`;
+
+const ExampleTranslationInput = styled.input`
+  flex: 1;
+  padding: 10px;
+  border: 1px solid ${(props) => props.theme.border};
+  border-radius: 4px;
+  background-color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.text};
+  font-size: 16px;
+
+  &:focus {
+    outline: none;
+    border-color: ${(props) => props.theme.primary};
+  }
+`;
+
+const HelpText = styled.p`
+  color: ${(props) => props.theme.textSecondary};
+  font-size: 0.9rem;
+  margin-top: 5px;
   margin-bottom: 10px;
 `;
 
@@ -145,10 +180,7 @@ const WordForm: React.FC<WordFormProps> = ({ onAddWord }) => {
     if (newMeaning.trim()) {
       setMeanings([
         ...meanings,
-        {
-          id: uuidv4(),
-          definition: newMeaning.trim(),
-        },
+        { id: uuidv4(), definition: newMeaning.trim() },
       ]);
       setNewMeaning("");
     }
@@ -160,20 +192,12 @@ const WordForm: React.FC<WordFormProps> = ({ onAddWord }) => {
 
   const handleAddExample = () => {
     if (newExample.trim() && newExampleTranslation.trim()) {
-      const wordPosition = newExample.indexOf(word);
-      if (wordPosition === -1) {
-        alert("예문에 단어가 포함되어 있지 않습니다.");
-        return;
-      }
-
       setExamples([
         ...examples,
         {
           id: uuidv4(),
           sentence: newExample.trim(),
           translation: newExampleTranslation.trim(),
-          wordPosition,
-          wordLength: word.length,
         },
       ]);
       setNewExample("");
@@ -205,12 +229,11 @@ const WordForm: React.FC<WordFormProps> = ({ onAddWord }) => {
       <FormTitle>새 단어 추가</FormTitle>
       <form onSubmit={handleSubmit}>
         <FormGroup>
-          <Label>단어</Label>
+          <Label htmlFor="word">단어</Label>
           <Input
-            type="text"
+            id="word"
             value={word}
             onChange={(e) => setWord(e.target.value)}
-            placeholder="영어 단어를 입력하세요"
             required
           />
         </FormGroup>
@@ -219,71 +242,68 @@ const WordForm: React.FC<WordFormProps> = ({ onAddWord }) => {
           <Label>의미</Label>
           <div>
             <Input
-              type="text"
               value={newMeaning}
               onChange={(e) => setNewMeaning(e.target.value)}
-              placeholder="단어의 의미를 입력하세요"
+              placeholder="새로운 의미를 입력하세요"
             />
             <AddButton type="button" onClick={handleAddMeaning}>
               의미 추가
             </AddButton>
           </div>
-          <ListContainer>
+          <List>
             {meanings.map((meaning) => (
               <ListItem key={meaning.id}>
-                <ListItemText>{meaning.definition}</ListItemText>
-                <RemoveButton onClick={() => handleRemoveMeaning(meaning.id)}>
+                <span>{meaning.definition}</span>
+                <RemoveButton
+                  type="button"
+                  onClick={() => handleRemoveMeaning(meaning.id)}
+                >
                   삭제
                 </RemoveButton>
               </ListItem>
             ))}
-          </ListContainer>
+          </List>
         </FormGroup>
 
         <FormGroup>
           <Label>예문</Label>
           <ExampleInputContainer>
-            <TextArea
+            <ExampleInput
               value={newExample}
               onChange={(e) => setNewExample(e.target.value)}
-              placeholder="예문을 입력하세요 (단어는 자동으로 강조됩니다)"
+              placeholder="예문을 입력하세요 (*단어* 형식으로 강조할 단어를 표시)"
             />
-            <Input
-              type="text"
+            <ExampleTranslationInput
               value={newExampleTranslation}
               onChange={(e) => setNewExampleTranslation(e.target.value)}
-              placeholder="예문의 번역을 입력하세요"
+              placeholder="예문 번역"
             />
             <AddButton type="button" onClick={handleAddExample}>
               예문 추가
             </AddButton>
           </ExampleInputContainer>
-          <ListContainer>
+          <HelpText>
+            예문에서 강조할 단어는 *단어* 형식으로 입력하세요. 예: I love
+            *reading* books.
+          </HelpText>
+          <List>
             {examples.map((example) => (
               <ListItem key={example.id}>
                 <div>
-                  <ListItemText>
-                    {example.sentence.slice(0, example.wordPosition)}
-                    <span style={{ borderBottom: "2px solid #4CAF50" }}>
-                      {example.sentence.slice(
-                        example.wordPosition,
-                        example.wordPosition + example.wordLength
-                      )}
-                    </span>
-                    {example.sentence.slice(
-                      example.wordPosition + example.wordLength
-                    )}
-                  </ListItemText>
-                  <ListItemText style={{ color: "#b3b3b3" }}>
+                  <div>{example.sentence}</div>
+                  <div style={{ color: "#b3b3b3", fontStyle: "italic" }}>
                     {example.translation}
-                  </ListItemText>
+                  </div>
                 </div>
-                <RemoveButton onClick={() => handleRemoveExample(example.id)}>
+                <RemoveButton
+                  type="button"
+                  onClick={() => handleRemoveExample(example.id)}
+                >
                   삭제
                 </RemoveButton>
               </ListItem>
             ))}
-          </ListContainer>
+          </List>
         </FormGroup>
 
         <SubmitButton type="submit">단어 추가</SubmitButton>

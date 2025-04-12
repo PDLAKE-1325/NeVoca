@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { Word, Quiz as QuizType } from "../types";
 import { v4 as uuidv4 } from "uuid";
 
@@ -15,28 +13,6 @@ const QuizContainer = styled.div`
 const QuizTitle = styled.h2`
   margin-bottom: 20px;
   color: ${(props) => props.theme.text};
-`;
-
-const QuizTypeContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-`;
-
-const QuizTypeButton = styled.button<{ active: boolean }>`
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: ${(props) =>
-    props.active ? props.theme.primary : props.theme.background};
-  color: ${(props) => (props.active ? "white" : props.theme.text)};
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: ${(props) =>
-      props.active ? props.theme.primaryHover : props.theme.border};
-  }
 `;
 
 const QuestionContainer = styled.div`
@@ -84,28 +60,6 @@ const OptionButton = styled.button<{
   }
 `;
 
-const FillInBlankContainer = styled.div`
-  margin-top: 20px;
-`;
-
-const BlankSpace = styled.span`
-  display: inline-block;
-  min-width: 100px;
-  height: 30px;
-  border-bottom: 2px solid ${(props) => props.theme.primary};
-  margin: 0 5px;
-`;
-
-const DraggableWord = styled.div`
-  display: inline-block;
-  padding: 5px 10px;
-  margin: 5px;
-  background-color: ${(props) => props.theme.primary};
-  color: white;
-  border-radius: 4px;
-  cursor: move;
-`;
-
 const NextButton = styled.button`
   background-color: ${(props) => props.theme.primary};
   color: white;
@@ -127,75 +81,53 @@ interface QuizProps {
 }
 
 const Quiz: React.FC<QuizProps> = ({ words }) => {
-  const [quizType, setQuizType] = useState<"word" | "example">("word");
   const [currentQuiz, setCurrentQuiz] = useState<QuizType | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showAnswer, setShowAnswer] = useState(false);
 
   useEffect(() => {
     generateNewQuiz();
-  }, [words, quizType]);
+  }, [words]);
 
   const generateNewQuiz = () => {
     if (words.length === 0) return;
 
     const randomWord = words[Math.floor(Math.random() * words.length)];
+    const quizType = Math.floor(Math.random() * 2);
+
     let newQuiz: QuizType;
 
-    if (quizType === "word") {
-      const quizSubType = Math.floor(Math.random() * 2);
-
-      if (quizSubType === 0) {
-        // 단어 -> 뜻
-        newQuiz = {
-          id: uuidv4(),
-          type: "word-to-meaning",
-          question: randomWord.word,
-          answer: randomWord.meanings[0].definition,
-          options: [
-            randomWord.meanings[0].definition,
-            ...words
-              .filter((w) => w.id !== randomWord.id)
-              .map((w) => w.meanings[0].definition)
-              .sort(() => Math.random() - 0.5)
-              .slice(0, 3),
-          ].sort(() => Math.random() - 0.5),
-        };
-      } else {
-        // 뜻 -> 단어
-        newQuiz = {
-          id: uuidv4(),
-          type: "meaning-to-word",
-          question: randomWord.meanings[0].definition,
-          answer: randomWord.word,
-          options: [
-            randomWord.word,
-            ...words
-              .filter((w) => w.id !== randomWord.id)
-              .map((w) => w.word)
-              .sort(() => Math.random() - 0.5)
-              .slice(0, 3),
-          ].sort(() => Math.random() - 0.5),
-        };
-      }
-    } else {
-      // 예문 문제
-      if (randomWord.examples.length === 0) {
-        generateNewQuiz();
-        return;
-      }
-
-      const randomExample =
-        randomWord.examples[
-          Math.floor(Math.random() * randomWord.examples.length)
-        ];
+    if (quizType === 0) {
+      // 단어 -> 뜻
       newQuiz = {
         id: uuidv4(),
-        type: "fill-in-blank",
-        question: randomExample.sentence,
+        type: "word-to-meaning",
+        question: randomWord.word,
+        answer: randomWord.meanings[0].definition,
+        options: [
+          randomWord.meanings[0].definition,
+          ...words
+            .filter((w) => w.id !== randomWord.id)
+            .map((w) => w.meanings[0].definition)
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 3),
+        ].sort(() => Math.random() - 0.5),
+      };
+    } else {
+      // 뜻 -> 단어
+      newQuiz = {
+        id: uuidv4(),
+        type: "meaning-to-word",
+        question: randomWord.meanings[0].definition,
         answer: randomWord.word,
-        exampleWordPosition: randomExample.wordPosition,
-        exampleWordLength: randomExample.wordLength,
+        options: [
+          randomWord.word,
+          ...words
+            .filter((w) => w.id !== randomWord.id)
+            .map((w) => w.word)
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 3),
+        ].sort(() => Math.random() - 0.5),
       };
     }
 
@@ -220,58 +152,20 @@ const Quiz: React.FC<QuizProps> = ({ words }) => {
   return (
     <QuizContainer>
       <QuizTitle>문제 풀기</QuizTitle>
-
-      <QuizTypeContainer>
-        <QuizTypeButton
-          active={quizType === "word"}
-          onClick={() => setQuizType("word")}
-        >
-          단어 문제
-        </QuizTypeButton>
-        <QuizTypeButton
-          active={quizType === "example"}
-          onClick={() => setQuizType("example")}
-        >
-          예문 문제
-        </QuizTypeButton>
-      </QuizTypeContainer>
-
       <QuestionContainer>
-        <QuestionText>
-          {currentQuiz.type === "fill-in-blank" ? (
-            <>
-              {currentQuiz.question.slice(0, currentQuiz.exampleWordPosition)}
-              <BlankSpace />
-              {currentQuiz.question.slice(
-                currentQuiz.exampleWordPosition! +
-                  currentQuiz.exampleWordLength!
-              )}
-            </>
-          ) : (
-            currentQuiz.question
-          )}
-        </QuestionText>
-
-        {currentQuiz.type !== "fill-in-blank" ? (
-          <OptionsContainer>
-            {currentQuiz.options?.map((option) => (
-              <OptionButton
-                key={option}
-                onClick={() => !showAnswer && handleAnswerSelect(option)}
-                isSelected={selectedAnswer === option}
-                isCorrect={showAnswer && option === currentQuiz.answer}
-              >
-                {option}
-              </OptionButton>
-            ))}
-          </OptionsContainer>
-        ) : (
-          <DndProvider backend={HTML5Backend}>
-            <FillInBlankContainer>
-              <DraggableWord>{currentQuiz.answer}</DraggableWord>
-            </FillInBlankContainer>
-          </DndProvider>
-        )}
+        <QuestionText>{currentQuiz.question}</QuestionText>
+        <OptionsContainer>
+          {currentQuiz.options?.map((option) => (
+            <OptionButton
+              key={option}
+              onClick={() => !showAnswer && handleAnswerSelect(option)}
+              isSelected={selectedAnswer === option}
+              isCorrect={showAnswer && option === currentQuiz.answer}
+            >
+              {option}
+            </OptionButton>
+          ))}
+        </OptionsContainer>
       </QuestionContainer>
 
       {showAnswer && (

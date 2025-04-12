@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import WordList from "./components/WordList";
 import WordForm from "./components/WordForm";
 import Quiz from "./components/Quiz";
-import { Word, Theme } from "./types";
+import { Word, Theme, StoredWords } from "./types";
 
 const darkTheme: Theme = {
   background: "#1a1a1a",
@@ -67,10 +67,36 @@ const MainContent = styled.main`
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"add" | "list" | "quiz">("add");
-  const [words, setWords] = useState<Word[]>([]);
+  const [words, setWords] = useState<Word[]>(() => {
+    // 초기 상태를 localStorage에서 불러오기
+    const savedWords = localStorage.getItem("words");
+    if (savedWords) {
+      try {
+        const parsed: StoredWords = JSON.parse(savedWords);
+        return parsed.words || [];
+      } catch (error) {
+        console.error("저장된 단어를 불러오는 중 오류가 발생했습니다:", error);
+        return [];
+      }
+    }
+    return [];
+  });
+
+  // 단어가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    const storedWords: StoredWords = {
+      words,
+      lastUpdated: new Date().toISOString(),
+    };
+    localStorage.setItem("words", JSON.stringify(storedWords));
+  }, [words]);
 
   const handleAddWord = (newWord: Word) => {
-    setWords([...words, newWord]);
+    setWords((prevWords) => [...prevWords, newWord]);
+  };
+
+  const handleDeleteWord = (wordId: string) => {
+    setWords((prevWords) => prevWords.filter((word) => word.id !== wordId));
   };
 
   return (
@@ -102,7 +128,9 @@ const App: React.FC = () => {
 
         <MainContent>
           {activeTab === "add" && <WordForm onAddWord={handleAddWord} />}
-          {activeTab === "list" && <WordList words={words} />}
+          {activeTab === "list" && (
+            <WordList words={words} onDeleteWord={handleDeleteWord} />
+          )}
           {activeTab === "quiz" && <Quiz words={words} />}
         </MainContent>
       </AppContainer>
