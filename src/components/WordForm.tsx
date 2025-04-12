@@ -131,6 +131,8 @@ const ExampleInputContainer = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
+  width: 100%;
+  overflow-x: hidden;
 `;
 
 const ExampleInput = styled.input`
@@ -141,6 +143,9 @@ const ExampleInput = styled.input`
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
   font-size: 1rem;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 
   &:focus {
     outline: none;
@@ -156,6 +161,9 @@ const ExampleTranslationInput = styled.input`
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
   font-size: 1rem;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 
   &:focus {
     outline: none;

@@ -19,6 +19,8 @@ const WordCard = styled.div`
   margin-bottom: 1rem;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const WordHeader = styled.div`
@@ -57,6 +59,8 @@ const ContentContainer = styled.div<{ isExpanded: boolean }>`
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
   padding: ${(props) => (props.isExpanded ? "1rem" : "0")};
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const Section = styled.div`
@@ -93,6 +97,9 @@ const ExampleItem = styled.li`
 const ExampleText = styled.p`
   margin: 0 0 0.25rem 0;
   color: ${(props) => props.theme.text};
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 `;
 
 const ExampleTranslation = styled.p`
@@ -100,6 +107,9 @@ const ExampleTranslation = styled.p`
   color: ${(props) => props.theme.textSecondary};
   font-style: italic;
   font-size: 0.8rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 `;
 
 const HighlightedWord = styled.span`
