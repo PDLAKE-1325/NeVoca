@@ -26,29 +26,6 @@ NeVoca는 영어 단어를 효과적으로 학습할 수 있는 웹 애플리케
 - Styled Components
 - React DnD (드래그 앤 드롭)
 
-## 설치 및 실행
-
-1. 저장소를 클론합니다:
-
-```bash
-git clone https://github.com/your-username/nevoca.git
-cd nevoca
-```
-
-2. 의존성을 설치합니다:
-
-```bash
-npm install
-```
-
-3. 개발 서버를 실행합니다:
-
-```bash
-npm start
-```
-
-4. 브라우저에서 `http://localhost:3000`으로 접속합니다.
-
 ## 라이센스
 
 MIT
