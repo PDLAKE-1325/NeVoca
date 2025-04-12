@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import App from "./App";
 import { Theme } from "./types";
+import * as serviceWorker from "./serviceWorker";
 
 const darkTheme: Theme = {
   background: "#1a1a1a",
@@ -51,3 +52,6 @@ root.render(
     </ThemeProvider>
   </React.StrictMode>
 );
+
+// PWA 서비스 워커 등록
+serviceWorker.register();
