@@ -1,21 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import {
+  createGlobalStyle,
+  ThemeProvider,
+  DefaultTheme,
+} from "styled-components";
 import App from "./App";
-import { Theme } from "./types";
 import * as serviceWorker from "./serviceWorker";
-
-const darkTheme: Theme = {
-  background: "#1a1a1a",
-  surface: "#2d2d2d",
-  text: "#ffffff",
-  textSecondary: "#b3b3b3",
-  primary: "#4CAF50",
-  primaryHover: "#45a049",
-  error: "#ff4444",
-  errorHover: "#ff3333",
-  border: "#404040",
-};
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -32,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     background-color: ${(props) => props.theme.background};
     color: ${(props) => props.theme.text};
+    transition: background-color 0.3s, color 0.3s;
   }
 
   code {
@@ -46,10 +38,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={darkTheme}>
-      <GlobalStyle />
-      <App />
-    </ThemeProvider>
+    <App />
   </React.StrictMode>
 );
 

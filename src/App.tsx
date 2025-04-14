@@ -1,20 +1,35 @@
 import React, { useState, useEffect } from "react";
-import styled, { ThemeProvider } from "styled-components";
+import styled, { ThemeProvider, DefaultTheme } from "styled-components";
 import WordList from "./components/WordList";
 import WordForm from "./components/WordForm";
 import Quiz from "./components/Quiz";
-import { Word, Theme, StoredWords } from "./types";
+import { Word, StoredWords } from "./types";
+import * as serviceWorker from "./serviceWorker";
 
-const darkTheme: Theme = {
-  background: "#1a1a1a",
-  surface: "#2d2d2d",
-  text: "#ffffff",
-  textSecondary: "#b3b3b3",
-  primary: "#4CAF50",
-  primaryHover: "#45a049",
-  error: "#ff4444",
-  errorHover: "#ff3333",
-  border: "#404040",
+const lightTheme: DefaultTheme = {
+  primary: "#007AFF",
+  primaryHover: "#0056b3",
+  background: "#F2F2F7",
+  surface: "#FFFFFF",
+  surfaceHover: "#F5F5F5",
+  text: "#000000",
+  textSecondary: "#6C6C6C",
+  border: "#E5E5EA",
+  error: "#FF3B30",
+  errorHover: "#CC2F26",
+};
+
+const darkTheme: DefaultTheme = {
+  primary: "#0A84FF",
+  primaryHover: "#0056b3",
+  background: "#000000",
+  surface: "#1C1C1E",
+  surfaceHover: "#2C2C2E",
+  text: "#FFFFFF",
+  textSecondary: "#8E8E93",
+  border: "#38383A",
+  error: "#FF453A",
+  errorHover: "#CC2F26",
 };
 
 const AppContainer = styled.div`
@@ -117,12 +132,20 @@ const App: React.FC = () => {
 
   // 단어가 변경될 때마다 localStorage에 저장
   useEffect(() => {
-    const storedWords: StoredWords = {
+    const storedWords = {
       words,
       lastUpdated: new Date().toISOString(),
     };
     localStorage.setItem("words", JSON.stringify(storedWords));
   }, [words]);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("words");
+    if (storedData) {
+      const { words: storedWords } = JSON.parse(storedData);
+      setWords(storedWords);
+    }
+  }, []);
 
   const handleAddWord = (newWord: Word) => {
     setWords((prevWords) => [...prevWords, newWord]);

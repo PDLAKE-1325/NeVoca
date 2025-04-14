@@ -32,8 +32,10 @@ const Label = styled.label`
 const Input = styled.input`
   width: 100%;
   padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  box-sizing: border-box;
   border: 1px solid ${(props) => props.theme.border};
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
   font-size: 1rem;
@@ -234,12 +236,14 @@ const WordForm: React.FC<WordFormProps> = ({ onAddWord }) => {
 
   const handleAddExample = () => {
     if (newExample.trim() && newExampleTranslation.trim()) {
+      const highlightedWord = newExample.match(/\*([^*]+)\*/)?.[1] || "";
       setExamples([
         ...examples,
         {
           id: uuidv4(),
           sentence: newExample.trim(),
           translation: newExampleTranslation.trim(),
+          highlightedWord: highlightedWord,
         },
       ]);
       setNewExample("");
